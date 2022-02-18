@@ -39,7 +39,11 @@ whocc_scrapper <- function(code) {
     return(rtn)
   } else {
     # pattern to get ATC label for the given code
-    pattern <- paste0(".+<a.*code=", code, "&showdescription=no\">(.+)</a>.+")
+    if (nchar(code) > 1) {
+      pattern <- paste0(".+<a.*code=", code, "&showdescription=no\">(.+)</a>.+")
+    } else {
+      pattern <- paste0(".+<a.*code=", code, "&showdescription=yes\">(.+)</a>.+")
+    }
     label <- sub(pattern, "\\1", grep(pattern, site, value = TRUE))
     rtn <- data.frame("ATC.code" = code,
                       "Name" = label,
